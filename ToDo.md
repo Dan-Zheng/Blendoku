@@ -1,3 +1,6 @@
+## Major Bugs
+- [ ] BitMapData to sprite for circles does not work as intended
+
 ## UI
 - Aesthetics (Google Material)
  - [ ] Google Material

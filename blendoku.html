@@ -34,12 +34,11 @@ var arcSize = 35; // size of the larger circle/outside arc
 var circleSize = 25; // size of the smaller circle/inner arc
 var circleDist = arcSize * 1.1; // distance between circles
 var bmd;
-var masterLoop = 2; // number of loops, starts from default 1
+var masterLoop = 3; // number of loops, starts from default 1
 
 var colorA = "#556270"; // initial color hex value
 var colorB = "#FA6900"; // final color hex value
-var colorSize = 100; // relative distance between initial and final
-var n = 7; // number of steps between initial and final
+var steps = 7 // number of steps between initial and final
 
 for(var i = 0; i <= masterLoop-1; i++)
 {
@@ -48,20 +47,17 @@ for(var i = 0; i <= masterLoop-1; i++)
         colorA = $.xcolor.random();
         colorB = $.xcolor.random();
     }
-    for(var j = 0; j <= colorSize; j += colorSize/n)
+    for(var j = 0; j <= steps; j++)
     {
-        var k = $.xcolor.gradientlevel(colorA,colorB,j,colorSize); // finds hex value of gradient color
-        color.push(k.getHex()); // appends hex value of gradient color to array
-    }
-    console.log(color); // prints array to the console
-
-    for(var j = 0; j < color.length; j++)
-    {
-        cords.push(circleDist+(j)*2*circleDist);
-        cords.push(circleDist+(i)*2*circleDist);
-        health.push(1.00);
+        var k = $.xcolor.gradientlevel(colorA,colorB,j,steps); // finds hex value of gradient color
+        color.push(k.getHex()); // appends hex value of gradient color to new circle
+        cords.push(circleDist+(j)*2*circleDist); // appends x coordinate of new circle
+        cords.push(circleDist+(i)*2*circleDist); // appends y coordinate of new circle
+        health.push(1.00); // appends health of new circle
     }
 }
+console.log(color);
+console.log(cords);
 
 function preload() {
     game.load.image('arrow', 'assets/star.png');
@@ -70,7 +66,7 @@ function preload() {
 //Dynamically draws circles based on how many coordinates are provided in the cords arry
 //Dynamically colors bases based on color[].
 //Function used later in create() and update()
-function draw(){
+function renderCircle(){
     var x=0;
     for (i=2; i<cords.length; i++){
         if(i%2==0){
@@ -85,7 +81,7 @@ function draw(){
 }
 
 function create() {
-    draw();
+    renderCircle();
 }
 
 function update() {
@@ -129,6 +125,7 @@ function drawCircle(x, y, radius, startAngle, endAngle, color){
 
         // Put BitmapData in a Sprite
         circleSprite = game.add.sprite(0, 0, bmd);
+        //circleSprite.anchor.setTo(x,y);
         circleSprite.inputEnabled = true;
         circleSprite.input.enableDrag(false, true);
 }

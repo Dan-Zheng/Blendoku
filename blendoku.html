@@ -28,16 +28,23 @@ var yellow="#FFDC0B";
 
 //Array used to set position of the bases. It is also used to set the stage size
 //[stage.x,stage.y, firstBase.x, firstBase.y, secondBase.x, secondBase.y, etc]
-var cords = [1000,1000,100,100,350,200,650,180,450,480, 30, 300];
+var cords = [1000,1000,125,500,275,500,425,500,575,500,725,500];
 
 //Array used to set colors of the bases.
-var color = ["#FFDC0B", "#FF0000", "#0015FF", "#1EFF00", "#FFDC0B", "#0015FF"];
+var color = ["#69D2E7", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#6970FF"];
 
+<<<<<<< HEAD
 var A="#69D2E7"; // initial color hex value
 var C="#A7DBD8"; // final color hex value
 var colorSize = 100; // relative distance between A and C
 var n=5; // number of steps between A and B
 var win = [A]; // array containing all color hex values for a problem, add A to array
+=======
+//Array used to set health of bases.
+var health=[1.00,1.00,1.00,1.00,1.00];
+var sprite;
+var bmd;
+>>>>>>> origin/master
 
 for(var i=colorSize/n;i<=colorSize;i+=colorSize/n)
 {

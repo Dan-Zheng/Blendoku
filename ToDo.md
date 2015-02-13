@@ -1,15 +1,20 @@
-# Map
-- [x] Draw Arc
-- [x] Use Dynamic Cords to Draw Cirlces
-- [x] Use Dynamic Color to Draw Circles
-- [x] Use Dynamic Health to Draw Arc
-- [ ] Draw Line
-- [ ] Make Line Drawing Dynamic
-- [ ] Change Shade of Color for Base Health
-- [ ] Create Camera
-- [ ] Control Camera
+# UI
+- Aesthetics (Google Material)
+ - [ ] Google Material
+ - [ ] Possibly enlist outsider to pick color schemes
+- GUI
+ - [ ] Drag/drop
+ - [ ] Win/fail screens
+ - [ ] Refresh
+ - [ ] Level select
 
-
-## Next
-- [x] Unfinished task
-- [x] Finsihed Task
+## Backend
+- Checks
+ - [ ] isWithinBoundary(), checks if dragged within boundary
+ - [ ] hasWon(), checks if user has won
+- ColorArray
+ - [ ] Generate discrete points from a gradient between two colors
+ - [ ] Generate list with n items
+ - [ ] Fill list with gradient color values/premade color palette
+- Colors
+ - [ ] Generate script to scrape from Adobe Kuler

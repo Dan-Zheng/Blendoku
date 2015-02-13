@@ -18,39 +18,120 @@
 
 
 //Sets up Phaser Game
-//var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
-
-//Defining variables makes chaning color later on much easier. Better dynamic code
-var red="#FF0000";
-var blue="#0015FF";
-var green="#1EFF00";
-var yellow="#FFDC0B";
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update, render: render });
 
 //Array used to set position of the bases. It is also used to set the stage size
 //[stage.x,stage.y, firstBase.x, firstBase.y, secondBase.x, secondBase.y, etc]
-var cords = [1000,1000,125,500,275,500,425,500,575,500,725,500];
+var cords = [1000,1000];
 
 //Array used to set colors of the bases.
-var color = ["#69D2E7", "#FFFFFF", "#FFFFFF", "#FFFFFF", "#6970FF"];
+var color = [];
 
 //Array used to set health of bases.
-var health=[1.00,1.00,1.00,1.00,1.00];
-var sprite;
+var health = [];
+
+var arcSize = 35; // size of the larger circle/outside arc
+var circleSize = 25; // size of the smaller circle/inner arc
+var circleDist = arcSize * 1.1; // distance between circles
 var bmd;
+var masterLoop = 2; // number of loops, starts from default 1
 
-var A="#69D2E7"; // initial color hex value
-var C="#A7DBD8"; // final color hex value
+var colorA = "#556270"; // initial color hex value
+var colorB = "#FA6900"; // final color hex value
 var colorSize = 100; // relative distance between initial and final
-var n=5; // number of steps between initial and final
-var win = [A]; // array containing all color hex values for a problem, add initial to array
+var n = 7; // number of steps between initial and final
 
-for(var i=colorSize/n;i<=colorSize;i+=colorSize/n)
+for(var i = 0; i <= masterLoop-1; i++)
 {
-    var j=$.xcolor.gradientlevel(A,C,i,colorSize); // finds hex value of gradient color
-    win.push(j.getHex()); // appends hex value of gradient color to array
+    if(i>0)
+    {
+        colorA = $.xcolor.random();
+        colorB = $.xcolor.random();
+    }
+    for(var j = 0; j <= colorSize; j += colorSize/n)
+    {
+        var k = $.xcolor.gradientlevel(colorA,colorB,j,colorSize); // finds hex value of gradient color
+        color.push(k.getHex()); // appends hex value of gradient color to array
+    }
+    console.log(color); // prints array to the console
+
+    for(var j = 0; j < color.length; j++)
+    {
+        cords.push(circleDist+(j)*2*circleDist);
+        cords.push(circleDist+(i)*2*circleDist);
+        health.push(1.00);
+    }
 }
 
-console.log(win); // prints array to the console
+function preload() {
+    game.load.image('arrow', 'assets/star.png');
+}
+
+//Dynamically draws circles based on how many coordinates are provided in the cords arry
+//Dynamically colors bases based on color[].
+//Function used later in create() and update()
+function draw(){
+    var x=0;
+    for (i=2; i<cords.length; i++){
+        if(i%2==0){
+            drawCircle(cords[i],cords[i+1],arcSize,0,Math.PI*2*health[x], color[x]);
+            var y=$.xcolor.darken(color[x],1,50);
+            drawCircle(cords[i],cords[i+1],circleSize,0,Math.PI*2,y.getHex());
+            if(x<color.length){
+                x++;
+            }
+        }
+    }
+}
+
+function create() {
+    draw();
+}
+
+function update() {
+
+}
+
+function render(){
+    game.debug.text(game.time.fps || '--', 2, 14, "#00ff00"); 
+    
+}
+
+//Might be of use later.
+//Copied from http://www.allworkallplay.org/blog/orbital-debris-making-an-html5-game-with-phaser/
+function spawnNewOrbiter(graphic) {
+    var orbiter = game.add.sprite(0, 0, graphic);
+    orbiter.anchor.setTo(0.5, 0.5);
+    orbiter.moveData = {};
+    orbiter.moveData.altitude = 0;
+    orbiter.moveData.altitudeTarget = 0;
+    orbiter.moveData.altitudeChangeRate = 0;
+    orbiter.moveData.altitudeMin = 0;
+    orbiter.moveData.altitudeMax = 0;
+    orbiter.moveData.orbit = 0;
+    orbiter.moveData.orbitRate = 0;
+    orbiterGroup.add(orbiter);
+    return orbiter;
+}
+
+function drawCircle(x, y, radius, startAngle, endAngle, color){
+    // Draw arc: (x, y, radius, startAngle, endAngle, clockwise)
+        // Create BitmapData
+        bmd = game.add.bitmapData(800,600);
+
+        // Draw circle
+        bmd.ctx.fillStyle = color;
+        bmd.ctx.beginPath();
+        bmd.ctx.arc(x, y, radius, startAngle, endAngle, false); 
+        bmd.ctx.lineTo(x ,y);
+        bmd.ctx.closePath();
+        bmd.ctx.fill();
+
+        // Put BitmapData in a Sprite
+        circleSprite = game.add.sprite(0, 0, bmd);
+        circleSprite.inputEnabled = true;
+        circleSprite.input.enableDrag(false, true);
+}
 
 </script>
 

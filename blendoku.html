@@ -40,17 +40,17 @@ var bmd;
 
 var A="#69D2E7"; // initial color hex value
 var C="#A7DBD8"; // final color hex value
-var colorSize = 100; // relative distance between A and C
-var n=5; // number of steps between A and B
-var win = [A]; // array containing all color hex values for a problem, add A to array
+var colorSize = 100; // relative distance between initial and final
+var n=5; // number of steps between initial and final
+var win = [A]; // array containing all color hex values for a problem, add initial to array
 
 for(var i=colorSize/n;i<=colorSize;i+=colorSize/n)
 {
-    var j=$.xcolor.gradientlevel(A,C,i,colorSize);
-    win.push(j.getHex());
+    var j=$.xcolor.gradientlevel(A,C,i,colorSize); // finds hex value of gradient color
+    win.push(j.getHex()); // appends hex value of gradient color to array
 }
 
-console.log(win);
+console.log(win); // prints array to the console
 
 </script>
 
